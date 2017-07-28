@@ -1,8 +1,12 @@
 # Play Phonebook example #
 
-This is a learning project for a Scala Play framework, a simple phonebook with CRUD operations, forms validation, working CSRF setup and Slick-based DB with migrations. Test coverage with ScalaTest goes without saying.
+This is a learning project for a Scala Play framework, a simple phonebook with CRUD operations using 'table module' design, forms validation, working CSRF setup and Slick-based DB with migrations.
 
-Below is a short design document which I used as a guide.
+It looks like this:
+
+![Index page with phonebook entries](project/teaser.png)
+
+Below is a short design document which I used as a guide, and a bit of afterthoughts.
 
 ## Design outline ##
 #### Phonebook structure ####
@@ -22,3 +26,12 @@ Below is a short design document which I used as a guide.
   * Entries are stored in in-memory H2 database.
   * Database schema should be created using migrations and populated with a few random entries when app is started.
   * No sync handlers, everything is async.
+  
+## What I learned ##
+Play is a great framework; scalable and idiomatic, lots of features, documentation is very good, community is large and helpful.
+
+However, its feature-completeness and robustness comes with a cost: Play looks and feels like ASP.NET of Scala. Certain amount of ceremony should be expected, and 'simple' things can become a source of big headache.
+Template syntax errors can be really obscure. 
+A big con is the constant breaking changes introduced with every version. Any tutorial or example you can find is guaranteed to be deprecated.
+
+Overall, Play is definitely more idiomatic and type-safe than Scalatra, but for a next project I would rather try Akka HTTP.
