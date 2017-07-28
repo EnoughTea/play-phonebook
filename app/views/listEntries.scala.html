@@ -91,9 +91,15 @@
 
                 @entries.map { case entry =>
                     <tr>
-                        <td>entry.id.toString</td>
-                        <td>entry.name</td>
-                        <td>entry.phoneNumber</td>
+                        <td>@entry.id.toString</td>
+                        <td>@entry.name</td>
+                        <td>@entry.phoneNumber</td>
+                        <td>
+                            @form(routes.PhonebookController.delete(entry.id)) {
+                                @CSRF.formField
+                                <input type="submit" class="btn btn-warning btn-xs" value="X">
+                                }
+                        </td>
                     </tr>
                 }
 
