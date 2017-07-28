@@ -1,3 +1,14 @@
+infos.alertLabel                =Done!
+info.entryCreated               =''{0}'' has been created.
+info.entryDeleted               =''{0}'' has been deleted.
+info.entryUpdated               =''{0}'' has been updated.
+
+entryForm.entryName             =Name
+entryForm.entryPhoneNumber      =Phone number
+entryForm.createNewEntry        =Create new entry
+entryForm.saveThisEntry         =Save this entry
+entryForm.deleteThisEntry       =Delete this entry
+
 search.doSearch                 =Search
 search.inputTip                 =Person''s name or phone number...
 
@@ -10,3 +21,9 @@ entriesList.nameHeader          =Name
 entriesList.phoneHeader         =Phone number
 entriesList.navigationLabel     =Displaying entries {0} to {1} ({2} total)
 entriesList.noEntriesToShow     =Phonebook is empty, no entries to display.
+
+errors.alertLabel               =Error!
+error.entryAlreadyExists        =''{0}'' already exists.
+error.entryNotFoundForDeletion  =Entry with ID:{0} cannot be found for deletion.
+error.required                  =Please, fill the ''{0}'' form field.
+error.invalidPhone              =Please, provide a phone number without letters and unnecessary symbols for the ''{0}'' form field.

@@ -1,0 +1,44 @@
+html {
+    background: #eee;
+    font-size: 16px;
+}
+
+section h1 {
+    margin: 1em 0 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+section#main {
+    position: relative;
+    padding: 2em 2em;
+    min-width: 480px;
+    min-height: 600px;
+}
+
+div#search-container {
+    padding: 1em 0 1em 0;
+}
+
+div#no-entries {
+    margin-top: 1em;
+}
+
+table.entries em {
+    color: #aaa;
+}
+
+a.entry-table-link {
+    display: block;
+}
+
+a:active.entry-table-link{
+    text-decoration: none;
+}
+
+a:hover.entry-table-link {
+    text-decoration: none;
+}
+
+ul.pager li.current span {
+    color: #666;
+}

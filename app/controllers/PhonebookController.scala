@@ -2,9 +2,9 @@ package controllers
 
 import javax.inject._
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
-import forms.PhonebookEntryForm
+import forms.{PhonebookEntryForm, PhonebookEntryFormData}
 import models.PhonebookPage
 import play.api.i18n._
 import play.api.mvc._
@@ -28,6 +28,50 @@ class PhonebookController @Inject()(cc: ControllerComponents,
   /** Handles default path requests, redirects to phonebook entries list. */
   def index: Action[AnyContent] = Action {
     home
+  }
+
+  /** Handles the 'new entry form' submission. */
+  def create(): Action[AnyContent] = Action.async { implicit rs: Request[_] =>
+    /** Creates a task which returns true if 'name — phone number'
+      * from entry data is already present in the phonebook; false otherwise. */
+    def entryAlreadyExistsTask(entryData: PhonebookEntryFormData): Future[Boolean] = {
+      phonebook.findByNameAndPhoneNumber(entryData.name.trim(), entryData.phoneNumber.trim()).map(_.isDefined)
+    }
+
+    phonebook.list(0, entriesPerPage).flatMap(entries =>
+      PhonebookEntryForm().bindFromRequest.fold(
+        // Display simple validation errors:
+        formWithErrors => Future.successful(BadRequest(html.listEntries(entries.getOrElse(PhonebookPage.Empty), "", formWithErrors))),
+        // Perform more complex unicity validation:
+        entryData => entryAlreadyExistsTask(entryData).flatMap(entryExists =>
+          if (entryExists) {
+            Future.successful(BadRequest(html.listEntries(entries.getOrElse(PhonebookPage.Empty), "", PhonebookEntryForm.withFailedUnicity(entryData))))
+          } else {
+            phonebook.insert(entryData.toEntry)
+              .map(_ => home.flashing("success" -> Messages("info.entryCreated", entryData)))
+          }
+        )
+      )
+    )
+  }
+
+  /**
+    * Handles phonebook entry deletion.
+    *
+    * @param id Id of the entry to delete.
+    */
+  def delete(id: Long): Action[AnyContent] = Action.async {
+    implicit rs: Request[_] =>
+      for {
+        entry <- phonebook.findById(id) // Somewhat wasteful, but more consistent with other messages.
+        deletionResult <- phonebook.delete(id)
+      } yield {
+        if (deletionResult.isSuccess) {
+          home.flashing("success" -> Messages("info.entryDeleted", entry.getOrElse(id)))
+        } else {
+          home.flashing("error" -> Messages("error.entryNotFoundForDeletion", id))
+        }
+      }
   }
 
   /**

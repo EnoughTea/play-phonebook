@@ -2,6 +2,8 @@
 
 @import helper._
 
+@implicitFieldConstructor = @{FieldConstructor(formInputFields.f)}
+
 @* Helper generating navigation links *@
 @link(newPage: Int) = @{
     routes.PhonebookController.list(newPage, currentFilter)
@@ -22,7 +24,34 @@
             @Messages("entriesList.titleEmpty")
         }</small>
         </h1>
+
+        @flash.get("success").map { message =>
+            <div class="alert alert-success" role="alert">
+                <strong>@Messages("infos.alertLabel")</strong> @message
+            </div>
+        }
+
+        @flash.get("error").map { message =>
+            <div class="alert alert-danger" role="alert">
+                <strong>@Messages("errors.alertLabel")</strong> @message
+            </div>
+        }
+
+        @formErrorsAlert((t: forms.PhonebookEntryFormData) => t, entryForm)
     </div>
+
+
+    <div id="new-entry" class="row">
+    @form(routes.PhonebookController.create(), 'class -> "form-inline") {
+        @inputText(entryForm("name"), '_label -> Messages("entryForm.entryName"),
+            'class -> "form-control", 'size -> "50")
+        @inputText(entryForm("phoneNumber"), '_label -> Messages("entryForm.entryPhoneNumber"),
+            'class -> "form-control", 'size -> "20")
+        @CSRF.formField
+        <button type="submit" class="btn btn-primary">@Messages("entryForm.createNewEntry")</button>
+    }
+    </div>
+
 
     <div id="search-container" class="row">
         <h2 class="h3">@Messages("entriesList.contentsTitle")</h2>

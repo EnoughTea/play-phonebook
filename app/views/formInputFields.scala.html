@@ -1,0 +1,18 @@
+@(elements: helper.FieldElements)
+
+@*
+* Generate input according to twitter bootstrap rules
+*@
+<div @if(elements.hasErrors) { class="form-group has-error" } else { class="form-group" }>
+    <label class="sr-only" for="@elements.id">@elements.label</label>
+    <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1"><strong>@elements.label</strong></span>
+        @elements.input
+        <span class="input-group-addon">
+            @elements.infos.map(i =>
+                    if (i.toLowerCase.startsWith("required")) {"*"}
+                    else {""}
+            ).mkString("")
+        </span>
+    </div>
+</div>
