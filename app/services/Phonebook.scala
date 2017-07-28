@@ -15,7 +15,7 @@ import models._
   * @param entriesDal Data access layer for [[PhonebookEntry]]'s.
   */
 @Singleton
-class Phonebook @Inject()(entriesDal: PhonebookEntriesDAL) {
+class Phonebook @Inject() (entriesDal: PhonebookEntriesDAL) {
   /** Phonebook entries total count. */
   def count(): Future[Int] = entriesDal.count()
 
