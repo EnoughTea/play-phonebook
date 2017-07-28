@@ -8,27 +8,12 @@ import sbt.Keys._
 routesGenerator := InjectedRoutesGenerator
 
 
-// # Declated dependencies
+// # Declared dependencies
+
 // ## Common
-
-// Convert objects to/from string using marked functions.
-val jodaConvertVersion = "1.8"
-val jodaConvert = "org.joda" % "joda-convert" % jodaConvertVersion
-
 // Supports JSON-formatted logs.
 val logbackJsonEncoderVersion = "4.11"
 val logbackJsonEncoder = "net.logstash.logback" % "logstash-logback-encoder" % logbackJsonEncoderVersion
-
-// Provides nameOf macro similiar to C# 'nameof' operator, after import com.github.dwickern.macros.NameOf._
-// Examples at https://github.com/dwickern/scala-nameof
-val scalaNameOfVersion = "1.0.3"
-val scalaNameOf = "com.github.dwickern" %% "scala-nameof" % scalaNameOfVersion % Provided
-
-// URI-related DSL, examples at https://github.com/lemonlabsuk/scala-uri:
-// val uri = "http://theon.github.com/scala-uri" ? ("p1" -> "one") & ("p2" -> 2) & ("p3" -> true)
-// uri.toString would result in: http://theon.github.com/scala-uri?p1=one&p2=2&p3=true
-val scalaUriVersion = "0.4.16"
-val scalaUri = "io.lemonlabs" %% "scala-uri" % scalaUriVersion
 
 // DI framework.
 val scalaGuiceVersion = "4.1.0"
@@ -53,7 +38,7 @@ val scalaTestPlus = "org.scalatestplus.play" %% "scalatestplus-play" % scalaTest
 
 
 // # Dependencies conveniently sorted.
-val commonDependencies = Seq(jodaConvert, logbackJsonEncoder, scalaGuice, scalaNameOf, scalaUri)
+val commonDependencies = Seq(logbackJsonEncoder, scalaGuice)
 val testDependencies = Seq(scalaTestPlus)
 val dbDependencies = Seq(slick, playSlick, playSlickEvolutions, h2Database)
 val playModules = Seq(ehcache, guice, ws)
