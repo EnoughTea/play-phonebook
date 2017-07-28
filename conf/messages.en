@@ -1,5 +1,5 @@
 search.doSearch                 =Search
-search.inputTip                 =Person's name or phone number...
+search.inputTip                 =Person''s name or phone number...
 
 entriesList.title               =Play phonebook
 entriesList.titleNonEmpty       =({0} entries)
