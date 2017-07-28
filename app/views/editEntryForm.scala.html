@@ -1,0 +1,37 @@
+@(id: Long, entryForm: Form[forms.PhonebookEntryFormData])(implicit messages: Messages, request: RequestHeader)
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(formInputFields.f) }
+
+@main {
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-xs-10">
+                <h1>Edit phonebook entry</h1>
+            </div>
+            <div class="col-md-2 col-xs-2">
+            @form(routes.PhonebookController.delete(id), 'id -> "delete-entry-form") {
+                @CSRF.formField
+                <input type="submit" value="@Messages("entryForm.deleteThisEntry")" class="btn btn-warning">
+                }
+            </div>
+        </div>
+
+        @formErrorsAlert((t: forms.PhonebookEntryFormData) => t, entryForm)
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                @form(routes.PhonebookController.update(id)) {
+                    @inputText(entryForm("name"), '_label -> Messages("entryForm.entryName"),
+                        'class -> "form-control", 'size -> "50")
+                    @inputText(entryForm("phoneNumber"), '_label -> Messages("entryForm.entryPhoneNumber"),
+                        'class -> "form-control", 'size -> "20")
+                    @CSRF.formField
+                    <input type="submit" value="@Messages("entryForm.saveThisEntry")" class="btn btn-primary">
+                    <a href="@routes.PhonebookController.list()" class="btn btn-link">Cancel</a>
+                }
+            </div>
+        </div>
+    </div>
+}

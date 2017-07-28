@@ -14,5 +14,9 @@ POST    /entries/new                controllers.PhonebookController.create
 # Delete a phonebook entry
 POST    /entries/:id/delete         controllers.PhonebookController.delete(id: Long)
 
+# Edit existing phonebook entry
+GET     /entries/:id                controllers.PhonebookController.edit(id: Long)
+POST    /entries/:id                controllers.PhonebookController.update(id: Long)
+
 # Map static resources from the /public folder to the /assets URL path.
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

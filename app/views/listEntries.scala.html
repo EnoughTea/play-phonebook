@@ -14,6 +14,11 @@
     <th class="header">@title</th>
 }
 
+@* Helper generating table columns with edit entry links *@
+@editCol(title: String, id: Long) = {
+    <td><a class="entry-table-link" href="@routes.PhonebookController.edit(id)">@title</a></td>
+}
+
 @main {
     <div class="row">
         <h1 class="h2">
@@ -48,7 +53,7 @@
         @inputText(entryForm("phoneNumber"), '_label -> Messages("entryForm.entryPhoneNumber"),
             'class -> "form-control", 'size -> "20")
         @CSRF.formField
-        <button type="submit" class="btn btn-primary">@Messages("entryForm.createNewEntry")</button>
+        <button class="btn btn-primary">@Messages("entryForm.createNewEntry")</button>
     }
     </div>
 
@@ -91,9 +96,9 @@
 
                 @entries.map { case entry =>
                     <tr>
-                        <td>@entry.id.toString</td>
-                        <td>@entry.name</td>
-                        <td>@entry.phoneNumber</td>
+                        @editCol(entry.id.toString, entry.id)
+                        @editCol(entry.name, entry.id)
+                        @editCol(entry.phoneNumber, entry.id)
                         <td>
                             @form(routes.PhonebookController.delete(entry.id)) {
                                 @CSRF.formField

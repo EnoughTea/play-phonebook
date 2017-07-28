@@ -75,6 +75,32 @@ class PhonebookController @Inject()(cc: ControllerComponents,
   }
 
   /**
+    * Display the 'edit entry form' for an existing phonebook entry.
+    *
+    * @param id Id of the entry to edit.
+    */
+  def edit(id: Long): Action[AnyContent] = Action.async { implicit rs: Request[_] =>
+    phonebook.findById(id).map({
+      case Some(e) => Ok(html.editEntryForm(id, PhonebookEntryForm.fill(e)))
+      case None => NotFound
+    })
+  }
+
+  /**
+    * Handle the 'edit entry form' submission.
+    *
+    * @param id Id of the entry to edit.
+    */
+  def update(id: Long): Action[AnyContent] = Action.async { implicit rs: Request[_] =>
+    PhonebookEntryForm().bindFromRequest.fold(
+      formWithErrors => Future.successful(BadRequest(html.editEntryForm(id, formWithErrors))),
+      entryData => for {
+        _ <- phonebook.update(id, entryData.toEntry)
+      } yield home.flashing("success" -> Messages("info.entryUpdated", entryData))
+    )
+  }
+
+  /**
     * Displays the paginated list of phonebook entries.
     *
     * @param page   Current page number (starts from 0).

@@ -42,3 +42,8 @@ a:hover.entry-table-link {
 ul.pager li.current span {
     color: #666;
 }
+
+form#delete-entry-form {
+    margin: 3.5em 0 10px;
+    text-align: right;
+}
