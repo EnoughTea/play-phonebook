@@ -1,0 +1,17 @@
+@(func: (_ => _), targetForm: Form[_])(implicit messages: Messages)
+
+@import helpers.ViewHelper
+    @*
+* Generate error alert box according to twitter bootstrap rules
+*@
+@if(targetForm.hasErrors) {
+    <div class="alert alert-danger" role="alert">
+        <strong>@Messages("errors.alertLabel")</strong>
+        @for(formError <- targetForm.errors) {
+            @for(message <- formError.messages) {
+                <span>@Messages(message, ViewHelper.camelCaseToSpaces(formError.key).capitalize)</span>
+            }
+        }
+
+    </div>
+}

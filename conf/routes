@@ -1,0 +1,22 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Default path will just redirect to the phonebook entries list.
+GET     /                           controllers.PhonebookController.index
+
+# List phonebook entries, presenting specified page of the given filter.
+GET     /entries                    controllers.PhonebookController.list(p:Int ?= 0, f ?= "")
+
+# Add new phonebook entry
+POST    /entries/new                controllers.PhonebookController.create
+
+# Delete a phonebook entry
+POST    /entries/:id/delete         controllers.PhonebookController.delete(id: Long)
+
+# Edit existing phonebook entry
+GET     /entries/:id                controllers.PhonebookController.edit(id: Long)
+POST    /entries/:id                controllers.PhonebookController.update(id: Long)
+
+# Map static resources from the /public folder to the /assets URL path.
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

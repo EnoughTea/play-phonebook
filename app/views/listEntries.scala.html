@@ -1,0 +1,145 @@
+@(currentPage: PhonebookPage, currentFilter: String, entryForm: Form[forms.PhonebookEntryFormData])(implicit request: RequestHeader, flash: Flash, messages: Messages)
+
+@import helper._
+
+@implicitFieldConstructor = @{FieldConstructor(formInputFields.f)}
+
+@* Helper generating navigation links *@
+@link(newPage: Int) = @{
+    routes.PhonebookController.list(newPage, currentFilter)
+}
+
+@* Helper generating table headers *@
+@header(title: String) = {
+    <th class="header">@title</th>
+}
+
+@* Helper generating table columns with edit entry links *@
+@editCol(title: String, id: Long) = {
+    <td><a class="entry-table-link" href="@routes.PhonebookController.edit(id)">@title</a></td>
+}
+
+@main {
+    <div class="row">
+        <h1 class="h2">
+            @Messages("entriesList.title")<small>
+        @if(currentPage.count > 0) {
+            @Messages("entriesList.titleNonEmpty", currentPage.count)
+        } else {
+            @Messages("entriesList.titleEmpty")
+        }</small>
+        </h1>
+
+        @flash.get("success").map { message =>
+            <div class="alert alert-success" role="alert">
+                <strong>@Messages("infos.alertLabel")</strong> @message
+            </div>
+        }
+
+        @flash.get("error").map { message =>
+            <div class="alert alert-danger" role="alert">
+                <strong>@Messages("errors.alertLabel")</strong> @message
+            </div>
+        }
+
+        @formErrorsAlert((t: forms.PhonebookEntryFormData) => t, entryForm)
+    </div>
+
+
+    <div id="new-entry" class="row">
+    @form(routes.PhonebookController.create(), 'class -> "form-inline") {
+        @inputText(entryForm("name"), '_label -> Messages("entryForm.entryName"),
+            'class -> "form-control", 'size -> "50")
+        @inputText(entryForm("phoneNumber"), '_label -> Messages("entryForm.entryPhoneNumber"),
+            'class -> "form-control", 'size -> "20")
+        @CSRF.formField
+        <button class="btn btn-primary">@Messages("entryForm.createNewEntry")</button>
+    }
+    </div>
+
+
+    <div id="search-container" class="row">
+        <h2 class="h3">@Messages("entriesList.contentsTitle")</h2>
+        @form(action = routes.PhonebookController.list()) {
+            <div id="search-entries" class="row">
+                <div class="col-lg-6">
+                    <div class="input-group">
+
+                        <input id="searchbox" name="f" value="@currentFilter" type="search" class="form-control"
+                        size="50" placeholder="@Messages("search.inputTip")">
+                        <span class="input-group-btn">
+                            <button id="searchsubmit" class="btn btn-default">
+                            @Messages("search.doSearch")
+                            </button>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            @CSRF.formField
+        }
+    </div>
+
+    @Option(currentPage.entries).filterNot(_.isEmpty).map { entries =>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="entries table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        @header(Messages("entriesList.idHeader"))
+                        @header(Messages("entriesList.nameHeader"))
+                        @header(Messages("entriesList.phoneHeader"))
+                        @header("")
+                    </tr>
+                </thead>
+                <tbody>
+
+                @entries.map { case entry =>
+                    <tr>
+                        @editCol(entry.id.toString, entry.id)
+                        @editCol(entry.name, entry.id)
+                        @editCol(entry.phoneNumber, entry.id)
+                        <td>
+                            @form(routes.PhonebookController.delete(entry.id)) {
+                                @CSRF.formField
+                                <input type="submit" class="btn btn-warning btn-xs" value="X">
+                                }
+                        </td>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <nav aria-label="Page navigation">
+            <ul class="pager">
+
+                @currentPage.prev.map { page =>
+                <li class=><a href="@link(page)">&larr;</a></li>
+                }.getOrElse {
+                    <li class="disabled"><a>&larr;</a></li>
+                }
+
+                <li class="current">
+                    <span>@Messages("entriesList.navigationLabel", currentPage.offset + 1,
+                        currentPage.offset + entries.size, currentPage.count)</span>
+                </li>
+
+                @currentPage.next.map { page =>
+                    <li><a href="@link(page)">&rarr;</a></li>
+                }.getOrElse {
+                    <li class="disabled"><a>&rarr;</a></li>
+                }
+
+            </ul>
+        </nav>
+    </div>
+    }.getOrElse {
+        <div id="no-entries" class="row">
+            <p class = well>@Messages("entriesList.noEntriesToShow")</p>
+        </div>
+    }
+}
