@@ -13,8 +13,19 @@
 }
 
 @main {
+    <div class="row">
+        <h1 class="h2">
+            @Messages("entriesList.title")<small>
+        @if(currentPage.count > 0) {
+            @Messages("entriesList.titleNonEmpty", currentPage.count)
+        } else {
+            @Messages("entriesList.titleEmpty")
+        }</small>
+        </h1>
+    </div>
+
     <div id="search-container" class="row">
-        <h2 class="h3">@Messages("entriesList.listTitle")</h2>
+        <h2 class="h3">@Messages("entriesList.contentsTitle")</h2>
         @form(action = routes.PhonebookController.list()) {
             <div id="search-entries" class="row">
                 <div class="col-lg-6">

@@ -1,0 +1,12 @@
+search.doSearch                 =Search
+search.inputTip                 =Person's name or phone number...
+
+entriesList.title               =Play phonebook
+entriesList.titleNonEmpty       =({0} entries)
+entriesList.titleEmpty          =(empty)
+entriesList.contentsTitle       =Entries
+entriesList.idHeader            =#
+entriesList.nameHeader          =Name
+entriesList.phoneHeader         =Phone number
+entriesList.navigationLabel     =Displaying entries {0} to {1} ({2} total)
+entriesList.noEntriesToShow     =Phonebook is empty, no entries to display.
