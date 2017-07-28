@@ -1,3 +1,4 @@
+import org.scalatest.Matchers._
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.Application
@@ -15,11 +16,11 @@ class RoutesSpec extends PlaySpec with GuiceOneServerPerSuite {
     .disable[EhCacheModule]
     .build()
 
-  "Default route (an index page) must exist" in {
+  "Default route (an index page) should exist" in {
     val wsClient = app.injector.instanceOf[WSClient]
 
     val response = await(wsClient.url(homeUrl).get())
 
-    response.status mustBe OK
+    response.status shouldBe OK
   }
 }
